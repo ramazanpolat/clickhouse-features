@@ -50,4 +50,27 @@ Column values can be encoded to save space and optimize queries.
 * **Memory**: This engine stores data in RAM, in uncompressed form. Data is stored in exactly the same form as it is received when read. In other words, reading from this table is completely free. Concurrent data access is synchronized. Locks are short: read and write operations don't block each other. Indexes are not supported. Reading is parallelized
 * **Buffer**: Buffers the data to write in RAM, periodically flushing it to another table. During the read operation, data is read from the buffer and the other table simultaneously
 
+# Tips and Tricks
 
+## Sampling
+
+You can use SAMPLE keyword to sample data automatically. But if you want to do in manually, you can use `rand()` like this:
+
+```sql
+SELECT * 
+FROM table
+WHERE (rand() % 1000) = 0
+```
+
+This will sample 1/1000 of actual data.
+
+The problem is, it is not deterministic. Since it uses `rand()`, the resultset will always change.
+
+So a better solution is to JOIN `system.numbers` or just `numbers(n)`:
+
+```sql
+SELECT nums.number AS num, *
+FROM table
+LEFT JOIN system.numbers nums
+WHERE (num % 1000 = 0)
+```
