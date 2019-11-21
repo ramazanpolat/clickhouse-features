@@ -50,6 +50,15 @@ Column values can be encoded to save space and optimize queries.
 * **Memory**: This engine stores data in RAM, in uncompressed form. Data is stored in exactly the same form as it is received when read. In other words, reading from this table is completely free. Concurrent data access is synchronized. Locks are short: read and write operations don't block each other. Indexes are not supported. Reading is parallelized
 * **Buffer**: Buffers the data to write in RAM, periodically flushing it to another table. During the read operation, data is read from the buffer and the other table simultaneously
 
+# Data Format
+
+## Protobuf
+
+* Transparent type conversion
+* Supports nested types
+* Efficient implementation
+
+
 # Constraints in INSERT queries
 
 ```sql
@@ -69,6 +78,48 @@ WHERE CounterID = {id:UInt32}
 AND SearchPhrase = {phrase:String}
 ```
 
+# Data Gaps Filling
+
+```sql
+SELECT EventDate, count() FROM table
+GROUP BY EventDate ORDER BY EventDate WITH FILL
+```
+
+WITH FILL FROM start
+
+WITH FILL FROM start TO end
+
+WITH FILL FROM start TO end STEP step
+
+# TTL expressions
+
+## TTL for columns
+
+```sql
+CREATE 
+```
+
+## TTL for tables
+
+```sql
+CREATE TABLE
+```
+
+## Tiered Storage
+
+```xml
+<disks>
+  <fast_disk>
+    <path>/mnt/disk2</path>
+  </fast_disk>
+</disks>
+```
+
+```
+ENGINE = MergeTree
+ORDEr BY ...
+SETTINGS storage_policy = 'ssd_and_hdd'
+```
 
 # Tips and Tricks
 
