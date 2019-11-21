@@ -53,11 +53,48 @@ Column values can be encoded to save space and optimize queries.
 # Data Format
 
 ## Protobuf
-
 * Transparent type conversion
 * Supports nested types
 * Efficient implementation
 
+## Parquet
+
+## ORC
+
+## Template Format
+
+`Website ${domain:Quoted} is ready`
+
+# Table Functions
+
+## URL
+
+## FILE
+
+## MySQL
+
+## INPUT
+
+?
+
+
+# Optimization of queries with ORDER BY
+
+```
+:) set optimize_read_in_order = 1
+
+
+:) 
+```
+
+# System Introspection
+
+* system.query_log
+* system.query_thread_log
+* system.part_log
+* system.trace_log
+* system.text_log
+* system.metric_log
 
 # Constraints in INSERT queries
 
