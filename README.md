@@ -77,7 +77,21 @@ Column values can be encoded to save space and optimize queries.
 
 ?
 
+# Row-Level Security
 
+```xml
+<users>
+  <user_name>
+    <databases>
+      <database_name>
+        <table_name>
+          <filter> id = 1 </filter>
+        </table_name>
+      </database_name>
+    </databases>
+  </user_name>
+</users>
+```
 # Optimization of queries with ORDER BY
 
 ```
