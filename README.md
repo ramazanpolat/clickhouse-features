@@ -5,12 +5,12 @@ A brief feature list of ClickHouse
 Column values can be encoded to save space and optimize queries.
 
 6 types of encoding:
-* Enums: A type of column that values are mapped to numbers
-* LowCardinality: Good for string values up to 10K
-* Delta: Difference between consecutive values
-* DoubleDelta: Difference between consecutive deltas, good for slowly changing sequences
-* Gorilla: Efficient for values that does not change often
-* T64: Strips lower and higher bits that does not change, good for big numbers in a small range
+* **Enums**: A type of column that values are mapped to numbers
+* **LowCardinality**: Good for string values up to 10K
+* **Delta**: Difference between consecutive values
+* **DoubleDelta**: Difference between consecutive deltas, good for slowly changing sequences
+* **Gorilla**: Efficient for values that does not change often
+* **T64**: Strips lower and higher bits that does not change, good for big numbers in a small range
 
 
 # Compression
@@ -196,3 +196,37 @@ FROM table
 LEFT JOIN system.numbers nums
 WHERE (num % 1000 = 0)
 ```
+
+## Spill to Disk
+
+When the memory is not enough for a huge group by query, the query gets interrupted with an error like this: `Memory limit (for query) exceeded`
+
+In this case, `max_bytes_before_external_group_by` can be used.
+
+**Usage:**
+
+For session only, use SQL command: `set max_bytes_before_external_group_by = 8000000000`
+
+*Note: 1 with 0 zeros is 1000000000 and it means 1 GB*
+
+You also should set `max_memory_usage` at least twice the size of `max_bytes_before_external_group_by`. This is necessary because there are two stages to aggregation: reading the date and forming intermediate data (1) and merging the intermediate data (2). Dumping data to the file system can only occur during stage 1. If the temporary data wasn't dumped, then stage 2 might require up to the same amount of memory as in stage 1.
+
+This settings also can be specified in `config.xml` like this:
+
+```xml
+<?xml version="1.0" ?>
+<yandex>
+    <profiles>
+        <default>
+            <max_memory_usage_for_all_queries>101310968832</max_memory_usage_for_all_queries>
+            <max_bytes_before_external_group_by>50655484416</max_bytes_before_external_group_by>
+            <max_memory_usage>101310968832</max_memory_usage>
+        </default>
+    </profiles>
+</yandex>
+```
+
+
+
+
+
