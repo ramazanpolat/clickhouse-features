@@ -50,6 +50,17 @@ Column values can be encoded to save space and optimize queries.
 * **Memory**: This engine stores data in RAM, in uncompressed form. Data is stored in exactly the same form as it is received when read. In other words, reading from this table is completely free. Concurrent data access is synchronized. Locks are short: read and write operations don't block each other. Indexes are not supported. Reading is parallelized
 * **Buffer**: Buffers the data to write in RAM, periodically flushing it to another table. During the read operation, data is read from the buffer and the other table simultaneously
 
+# Creating a Table Based On Select
+You can create a table without specifying columns individually.
+
+```sql
+CREATE TABLE table_name
+ENGINE = MergeTree() 
+ORDER BY (col1, col2) 
+AS 
+SELECT * FROM table
+```
+
 # Data Format
 
 ## Protobuf
