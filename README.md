@@ -218,7 +218,7 @@ In this case, `max_bytes_before_external_group_by` can be used.
 
 For session only, use SQL command: `set max_bytes_before_external_group_by = 8000000000`
 
-*Note: 1 with 0 zeros is 1000000000 and it means 1 GB*
+*Note: 1 with 9 zeros is 1000000000 and it means 1 GB*
 
 You also should set `max_memory_usage` at least twice the size of `max_bytes_before_external_group_by`. This is necessary because there are two stages to aggregation: reading the date and forming intermediate data (1) and merging the intermediate data (2). Dumping data to the file system can only occur during stage 1. If the temporary data wasn't dumped, then stage 2 might require up to the same amount of memory as in stage 1.
 
