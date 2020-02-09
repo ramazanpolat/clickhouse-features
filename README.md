@@ -222,7 +222,7 @@ For session only, use SQL command: `set max_bytes_before_external_group_by = 800
 
 You also should set `max_memory_usage` at least twice the size of `max_bytes_before_external_group_by`. This is necessary because there are two stages to aggregation: reading the date and forming intermediate data (1) and merging the intermediate data (2). Dumping data to the file system can only occur during stage 1. If the temporary data wasn't dumped, then stage 2 might require up to the same amount of memory as in stage 1.
 
-This settings also can be specified in `users.xml` like this:
+This settings also can be specified in `users.xml` (which is usually in `/etc/clickhouse-server/users.xml`like this:
 
 ```xml
 <?xml version="1.0" ?>
